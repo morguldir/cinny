@@ -3,6 +3,7 @@ import appDispatcher from '../dispatcher';
 
 import cons from './cons';
 
+
 function getSettings() {
   const settings = localStorage.getItem('settings');
   if (settings === null) return null;
@@ -146,6 +147,14 @@ class Settings extends EventEmitter {
     if (typeof settings.isNotificationSounds === 'undefined') return true;
     return settings.isNotificationSounds;
   }
+
+  clearCacheAndReload() {
+    const mx = initMatrix.matrixClient;
+    mx.stopClient()
+    mx.store.deleteAllData().then(() => {
+        window.location.reload();
+    });
+}
 
   setter(action) {
     const actions = {
